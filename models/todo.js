@@ -1,4 +1,5 @@
 'use strict';
+let Task = require('./task.js')
 module.exports = function(sequelize, DataTypes) {
   var Todo = sequelize.define('Todo', {
     nama: DataTypes.STRING

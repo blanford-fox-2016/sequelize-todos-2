@@ -17,12 +17,28 @@ switch (argv[3]) {
         todo_id: data.dataValues.id,
         tugas: param,
         done: false
-      }).then(function(){
-        console.log("Task added");
+      }).then(function(data){
+        console.log(`Task "${data.dataValues.tugas}" added`);
       })
     })
     break;
   case 'list':
+  if (argv[2] == 'all') {
+    console.log(`All Todo list : `);
+    task.findAll({
+      attributes:['id','tugas','done','todo_id']
+    })
+      .then(function(data){
+        for(var i=0; i<data.length; i++){
+          if(data[i].dataValues.done === false){
+            console.log(`${i+1}. [ ] ID : ${data[i].dataValues.id} | ${data[i].dataValues.tugas}`);
+          }else{
+            console.log(`${i+1}. [x] ID : ${data[i].dataValues.id} | ${data[i].dataValues.tugas}`);
+          }
+        }
+      })
+  } else {
+    console.log(`List todo for ${argv[2]} : `);
     todo.findOne({
       where:{nama:argv[2]}
     }).then(function(data){
@@ -32,13 +48,14 @@ switch (argv[3]) {
       }).then(function(task){
         for(var i = 0; i<task.length; i++){
           if (task[i].dataValues.done === false) {
-            console.log(`[ ] ${task[i].dataValues.id} | ${task[i].dataValues.tugas}`);
+            console.log(`${i+1}. [ ] ID : ${task[i].dataValues.id} | ${task[i].dataValues.tugas}`);
           }else{
-            console.log(`[x] ${task[i].dataValues.id} | ${task[i].dataValues.tugas}`);
+            console.log(`${i+1}. [x] ID : ${task[i].dataValues.id} | ${task[i].dataValues.tugas}`);
           }
         }
       })
     })
+  }
     break;
   case 'complete':
     todo.findOne({
