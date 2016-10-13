@@ -1,5 +1,5 @@
 'use strict';
-
+import System from './view.js'
 //write your code here
 let models = require('./models')
 let todo = models.Todo
@@ -110,7 +110,12 @@ switch (argv[3]) {
         })
       })
     break;
+  case "help":
+  if (argv[2] != null) 
+    System.help()
+      break;
   default:
     console.log("error");
+    System.mainMenu()
 
 }
