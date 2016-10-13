@@ -84,8 +84,12 @@ switch (argv[3]) {
           where:{
             id : argv[4]
           }
-        }).then(function(){
-          console.log("Data Deleted"); ///////////////////// BUG //////////////////
+        }).then(function(data){
+          if (data > 0){
+            console.log("Data Deleted");
+          }else{
+            console.log(" Error 304: Invalid ID");
+          }
         })
       })
     break;
