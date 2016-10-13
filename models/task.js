@@ -3,12 +3,14 @@
 module.exports = function(sequelize, DataTypes) {
   var Task = sequelize.define('Task', {
     content: DataTypes.STRING,
-    status: DataTypes.BOOLEAN
+    status: DataTypes.BOOLEAN,
+    todo_id: DataTypes.INTEGER
   }, {
     classMethods: {
       associate: function(models) {
         // associations can be defined here
         Task.hasMany(models.Tag)
+        Task.belongsTo(models.Todos)
       },
       addTask: function(newData){
         Task.create({
