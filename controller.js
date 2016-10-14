@@ -9,14 +9,21 @@ var List = models.List
 var argv = process.argv
 
 
-class Task {
-  constructor(task, completed) {
-    this.task = task
-    this.completed = completed
+class TodoTask {
+  constructor(todo) {
+    this.todo = todo
   }
 
   static viewHelp(){
     View.printHelp()
+  }
+}
+
+class ListTask {
+  constructor(list,status,todo_id) {
+    this.list = list
+    this.status = status
+    this.todo_id = todo_id
   }
 }
 
@@ -34,80 +41,83 @@ argv.forEach((val, index) => {
   // index = searchIndex(indexTask)
 
   if(val == "help"){
-    View.viewHelp()
+    View.printHelp()
   }
-  // else if(val == "list"){
-  //   Todos.getTodo()
-  // }
-  // else if (val == "add") {
-  //     // console.log(argv.length);
-  //     var dataBaru = ""
-  //     var temp = {}
-  //
-  //     if (typeof argv[3] == "undefined") {
-  //       console.log("Data harus di isi");
-  //     }else {
-  //       for (var i = 3; i < argv.length; i++) {
-  //         dataBaru += argv[i] + (i < argv.length-1 ? " " : "")
-  //       }
-  //       temp = new Task(dataBaru, false)
-  //       Todos.addList(temp)
-  //       // console.log(temp);
-  //       console.log(`Added "${dataBaru}" to your TODO list`);
-  //     }
-  // }
-  //
-  // else if (val == "delete") {
-  //   if (typeof argv[3] == "undefined") {
-  //     console.log("Data harus di isi");
-  //   }else {
-  //     Todos.deleteList(argv[3])
-  //     // console.log(dataBaru);
-  //   }
-  //
-  // }
-  //
-  // else if (val == "completed") {
-  //   if (typeof argv[3] == "undefined") {
-  //     console.log("Data harus di isi");
-  //   }else {
-  //     Todos.updateList(argv[3])
-  //     // console.log(dataBaru);
-  //   }
+  else if(val == "view_todo"){
+    if(argv[3]) {
+      List.getList(argv[3])
+    }
+    else {
+      Todo.getTodo()
+    }
+  }
 
-  // }
-  //
-  // else if (val == "uncompleted") {
-  //
-  //   // console.log(list[i].id);
-  //   list[index].status = false
-  //   jsonfile.writeFileSync(file, list)
-  //   console.log(`Task "${list[index].task}" to your TODO list belum selesai`);
-  // }
+  else if (val == "add_todo") {
+      // console.log(argv.length);
+      var dataBaru = ""
+      var temp = {}
+
+      if (typeof argv[3] == "undefined") {
+        console.log("Data harus di isi");
+      }else {
+        for (var i = 3; i < argv.length; i++) {
+          dataBaru += argv[i] + (i < argv.length-1 ? " " : "")
+        }
+        temp = new TodoTask(dataBaru)
+        Todo.addTodo(temp)
+        console.log(`Added "${dataBaru}" to your TODO list`);
+      }
+  }
+
+  else if (val == "delete_todo") {
+    if (typeof argv[3] == "undefined") {
+      console.log("Data harus di isi");
+    }else {
+      Todo.deleteTodo(argv[3])
+    }
+  }
+
+  else if (val == "add_list") {
+    // console.log(argv.length);
+    var dataBaru = ""
+    var temp = {}
+
+    if (typeof argv[3] == "undefined" || typeof argv[4] == "undefined" ) {
+      console.log("Data harus di isi");
+    }else {
+      for (var i = 4; i < argv.length; i++) {
+        dataBaru += argv[i] + (i < argv.length-1 ? " " : "")
+      }
+      temp = new ListTask(dataBaru, false, argv[3])
+      List.addList(temp)
+      console.log(`Added "${dataBaru}" to your TODO list`);
+    }
+  }
+
+  else if (val == "delete_list") {
+    if (typeof argv[3] == "undefined") {
+      console.log("Data harus di isi");
+    }else {
+      List.deleteList(argv[3])
+    }
+  }
+
+
+  else if (val == "complete_list") {
+    if (typeof argv[3] == "undefined") {
+      console.log("Data harus di isi");
+    }else {
+      List.completedList(argv[3])
+    }
+  }
+
+  else if (val == "uncomplete_list") {
+    if (typeof argv[3] == "undefined") {
+      console.log("Data harus di isi");
+    }else {
+      List.uncompletedList(argv[3])
+    }
+  }
 
 })
 
-
-// List.create({
-//   list: "nyapu",
-//   status: false,
-//   TodoId: 1
-// }).catch(function(err) {
-//   console.log(err.message);
-// })
-//
-// List.create({
-//   list: "ngopi",
-//   status: false,
-//   TodoId: 2
-// }).catch(function(err) {
-//   console.log(err.message);
-// })
-//
-// List.create({
-//   list: "tidur",
-//   status: false,
-//   TodoId: 2
-// }).catch(function(err) {
-//   console.log(err.message);
-// })

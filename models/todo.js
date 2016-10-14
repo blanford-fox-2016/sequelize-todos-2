@@ -16,6 +16,22 @@ module.exports = function(sequelize, DataTypes) {
             }
         });
       },
+
+      addTodo: function(value) {
+        Todo.create({
+          name: value.todo
+        }).catch(function(err){
+          console.log(err.message);
+        })
+      },
+
+      deleteTodo: function(id) {
+        Todo.destroy({
+          where: {id: id}
+        }).then(function () {
+          console.log(`Todo id ${id} deleted`)
+        })
+      }
     }
   });
   return Todo;
