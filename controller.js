@@ -119,5 +119,36 @@ argv.forEach((val, index) => {
     }
   }
 
+  else if (val == "add_tag") {
+    var dataBaru = ""
+
+    if (typeof argv[3] == "undefined" || typeof argv[4] == "undefined") {
+      console.log("Data harus di isi");
+    }else {
+      for (var i = 4; i < argv.length; i++) {
+        dataBaru += argv[i] + (i < argv.length-1 ? " " : "")
+      }
+      List.addTag(dataBaru, argv[3])
+    }
+  }
+
+  else if (val.split(":")[0] == "filter") {
+    var dataBaru = val.split(":")[1]
+
+    if (typeof argv[2] == "undefined") {
+      console.log("Data harus di isi");
+    }else {
+      List.searchTag(dataBaru)
+    }
+  }
+
+  else if (val == "list:outstanding") {
+    List.getOutstanding()
+  }
+
+  else if (val == "list:completed") {
+    List.getCompleted()
+  }
+
 })
 

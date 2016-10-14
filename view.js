@@ -16,6 +16,10 @@ class View {
     console.log("node todo.js delete_list <list_id>");
     console.log("node todo.js complete_list <list_id>");
     console.log("node todo.js uncomplete_list <list_id>");
+    console.log("node todo.js add_tag <list_id> <text>")
+    console.log("node todo.js filter:<tag_text>")
+    console.log("node todo.js list:outstanding")
+    console.log("node todo.js list:completed")
   }
 }
 

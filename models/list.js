@@ -3,7 +3,8 @@ module.exports = function(sequelize, DataTypes) {
   var List = sequelize.define('List', {
     list: DataTypes.STRING,
     status: DataTypes.BOOLEAN,
-    TodoId: DataTypes.INTEGER
+    TodoId: DataTypes.INTEGER,
+    tag: DataTypes.STRING
   }, {
     classMethods: {
       associate: function(models) {
@@ -17,7 +18,7 @@ module.exports = function(sequelize, DataTypes) {
         }).then(function (list) {
             for (var i = 0; i < list.length; i++) {
               var status = list[i].status
-              console.log(`${list[i].id}. [${status == true ? "x" : " "}] ${list[i].list} `)
+              console.log(`${list[i].id}. [${status == true ? "x" : " "}] ${list[i].list} tag: ${list[i].tag}`)
             }
         });
       },
@@ -64,7 +65,63 @@ module.exports = function(sequelize, DataTypes) {
         }).then(function () {
           console.log(`List id ${id} completed`)
         })
-      }
+      },
+
+      addTag: function (value, id) {
+        // console.log(value)
+        List.update({
+          tag: value
+        }, {
+          where: {
+            id: id
+          }
+        }).then(function () {
+          console.log(`List id ${id} added tag ${value}`)
+        })
+      },
+
+      searchTag: function (value) {
+        List.findAll({
+          where: {
+            tag: {
+              $like: '%'+value+'%'
+            }
+          }
+        }).then(function (list) {
+          for (var i = 0; i < list.length; i++) {
+            var status = list[i].status
+            console.log(`${list[i].id}. [${status == true ? "x" : " "}] ${list[i].list} [${value}]`)
+          }
+        });
+      },
+
+      getOutstanding: function () {
+        List.findAll({
+          where: {
+            status: 0
+          },
+          order: 'createdAt ASC'
+        }).then(function (list) {
+          for (var i = 0; i < list.length; i++) {
+            var status = list[i].status
+            console.log(`${list[i].id}. [${status == true ? "x" : " "}] ${list[i].list} ${list[i].createdAt}`)
+          }
+        });
+      },
+
+      getCompleted: function () {
+        List.findAll({
+          where: {
+            status: 1
+          },
+          order: 'updatedAt ASC'
+        }).then(function (list) {
+          for (var i = 0; i < list.length; i++) {
+            var status = list[i].status
+            console.log(`${list[i].id}. [${status == true ? "x" : " "}] ${list[i].list} ${list[i].updatedAt}`)
+          }
+        });
+      },
     }
   });
   return List;
